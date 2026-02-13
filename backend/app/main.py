@@ -34,7 +34,8 @@ app = FastAPI(
 
 # CORS (allow_credentials=True のときは allow_origins に "*" は使えない)
 # 本番: 環境変数 CORS_ORIGINS に Amplify の URL を追加（カンマ区切り）
-_origins = [x.strip() for x in settings.CORS_ORIGINS.split(",") if x.strip()]
+# ブラウザは末尾スラッシュなしで Origin を送るため、正規化して揃える
+_origins = [x.strip().rstrip("/") for x in settings.CORS_ORIGINS.split(",") if x.strip()]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=_origins,
