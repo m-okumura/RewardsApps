@@ -1,0 +1,38 @@
+# 本番・デモ用: Lightsail 1台で PostgreSQL + FastAPI を稼働
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: poi_app_postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: poi_app
+      POSTGRES_PASSWORD: poi_app_secret
+      POSTGRES_DB: poi_app
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U poi_app -d poi_app"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build: ./backend
+    container_name: poi_app_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql+asyncpg://poi_app:poi_app_secret@postgres:5432/poi_app
+      SECRET_KEY: ${SECRET_KEY:-change-me-in-production}
+      DEBUG: "false"
+      CORS_ORIGINS: ${CORS_ORIGINS:-http://localhost:3000,http://127.0.0.1:3000}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - backend_uploads:/app/uploads
+
+volumes:
+  postgres_data:
+  backend_uploads:
