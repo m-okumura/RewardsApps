@@ -1,17 +1,19 @@
 version: 1
-# AMPLIFY_MONOREPO_APP_ROOT=frontend と併用。frontend 以下でビルドが実行される
-frontend:
-  phases:
-    preBuild:
-      commands:
-        - npm ci
-    build:
-      commands:
-        - npm run build
-  artifacts:
-    baseDirectory: .next
-    files:
-      - '**/*'
-  cache:
-    paths:
-      - node_modules/**/*
+# モノレポ: AMPLIFY_MONOREPO_APP_ROOT 使用時は applications キーが必須
+applications:
+  - appRoot: frontend
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            - npm ci
+        build:
+          commands:
+            - npm run build
+      artifacts:
+        baseDirectory: .next
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
