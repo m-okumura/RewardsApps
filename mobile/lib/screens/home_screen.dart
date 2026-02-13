@@ -1,10 +1,42 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:provider/provider.dart';
-import 'package:poi_app/providers/auth_provider.dart';
+import 'package:poi_app/services/fitness_service.dart';
+import 'package:poi_app/services/point_service.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  int? _balance;
+  FitnessPointsModel? _fitness;
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    setState(() => _loading = true);
+    try {
+      final balance = await PointService.getBalance();
+      final fitness = await FitnessService.getPoints();
+      if (mounted) {
+        setState(() {
+          _balance = balance;
+          _fitness = fitness;
+          _loading = false;
+        });
+      }
+    } catch (_) {
+      if (mounted) setState(() => _loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -18,32 +50,50 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.receipt_long),
-              title: const Text('レシート'),
-              subtitle: const Text('レシートを撮影してポイントを貯めよう'),
-              onTap: () => context.push('/receipts'),
+      body: RefreshIndicator(
+        onRefresh: _load,
+        child: ListView(
+          physics: const AlwaysScrollableScrollPhysics(),
+          padding: const EdgeInsets.all(16),
+          children: [
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.receipt_long),
+                title: const Text('レシート'),
+                subtitle: const Text('レシートを撮影してポイントを貯めよう'),
+                onTap: () => context.push('/receipts'),
+              ),
             ),
-          ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.point_of_sale),
-              title: const Text('ポイント'),
-              subtitle: const Text('残高: 0 pt（Phase 2で実装）'),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.point_of_sale),
+                title: const Text('ポイント'),
+                subtitle: Text(_loading
+                    ? '読み込み中...'
+                    : '残高: ${_balance ?? 0} pt'),
+                onTap: () => context.push('/points'),
+              ),
             ),
-          ),
-          Card(
-            child: ListTile(
-              leading: const Icon(Icons.directions_walk),
-              title: const Text('歩数'),
-              subtitle: const Text('Phase 2で実装'),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.directions_walk),
+                title: const Text('歩数・ボトル'),
+                subtitle: Text(_loading
+                    ? '読み込み中...'
+                    : '${_fitness?.totalSteps ?? 0}歩 / ボトル${_fitness?.availableBottles ?? 0}個'),
+                onTap: () => context.push('/fitness'),
+              ),
             ),
-          ),
-        ],
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.quiz),
+                title: const Text('アンケート'),
+                subtitle: const Text('アンケートに回答してポイント獲得'),
+                onTap: () => context.push('/surveys'),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

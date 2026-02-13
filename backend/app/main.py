@@ -8,7 +8,8 @@ from fastapi.staticfiles import StaticFiles
 
 from app.config import get_settings
 from app.database import init_db
-from app.routers import auth, users, receipts
+from app.routers import auth, users, receipts, fitness, surveys, points
+from app.seed import seed_surveys
 
 settings = get_settings()
 
@@ -17,6 +18,7 @@ settings = get_settings()
 async def lifespan(app: FastAPI):
     """起動時・終了時の処理"""
     await init_db()
+    await seed_surveys()
     # アップロードディレクトリ作成
     Path(settings.UPLOAD_DIR).mkdir(parents=True, exist_ok=True)
     yield
@@ -52,6 +54,9 @@ app.mount("/uploads", StaticFiles(directory=settings.UPLOAD_DIR), name="uploads"
 app.include_router(auth.router, prefix="/api/v1")
 app.include_router(users.router, prefix="/api/v1")
 app.include_router(receipts.router, prefix="/api/v1")
+app.include_router(fitness.router, prefix="/api/v1")
+app.include_router(surveys.router, prefix="/api/v1")
+app.include_router(points.router, prefix="/api/v1")
 
 
 @app.get("/")

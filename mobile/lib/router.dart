@@ -7,6 +7,10 @@ import 'package:poi_app/screens/home_screen.dart';
 import 'package:poi_app/screens/receipt_list_screen.dart';
 import 'package:poi_app/screens/receipt_add_screen.dart';
 import 'package:poi_app/screens/profile_screen.dart';
+import 'package:poi_app/screens/fitness_screen.dart';
+import 'package:poi_app/screens/survey_list_screen.dart';
+import 'package:poi_app/screens/survey_answer_screen.dart';
+import 'package:poi_app/screens/points_screen.dart';
 
 GoRouter router(AuthProvider authProvider) => GoRouter(
   refreshListenable: authProvider,
@@ -57,6 +61,25 @@ GoRouter router(AuthProvider authProvider) => GoRouter(
     GoRoute(
       path: '/profile',
       builder: (context, state) => const ProfileScreen(),
+    ),
+    GoRoute(
+      path: '/fitness',
+      builder: (context, state) => const FitnessScreen(),
+    ),
+    GoRoute(
+      path: '/surveys',
+      builder: (context, state) => const SurveyListScreen(),
+    ),
+    GoRoute(
+      path: '/surveys/:id',
+      builder: (context, state) {
+        final id = int.tryParse(state.pathParameters['id'] ?? '0') ?? 0;
+        return SurveyAnswerScreen(surveyId: id);
+      },
+    ),
+    GoRoute(
+      path: '/points',
+      builder: (context, state) => const PointsScreen(),
     ),
   ],
 );

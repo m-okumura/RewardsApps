@@ -24,7 +24,14 @@ class Settings(BaseSettings):
     MAX_UPLOAD_SIZE: int = 5 * 1024 * 1024  # 5MB
 
     # CORS（本番のフロントURL。カンマ区切りで複数指定可）
-    CORS_ORIGINS: str = "http://localhost:3000,http://127.0.0.1:3000,http://localhost:3001"
+    # Flutter Web: --web-port=3000 で起動するか、よく使うポートを追加
+    CORS_ORIGINS: str = (
+        "http://localhost:3000,http://127.0.0.1:3000,http://localhost:3001,"
+        "http://localhost:8080,http://127.0.0.1:8080,"
+        "http://localhost:5000,http://127.0.0.1:5000,"
+        "http://localhost:12345,http://127.0.0.1:12345,"
+        "http://localhost:54321,http://127.0.0.1:54321"
+    )
 
     class Config:
         env_file = ".env"

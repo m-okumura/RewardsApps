@@ -26,3 +26,11 @@ class User(Base):
     point_transactions: Mapped[List["PointTransaction"]] = relationship(
         "PointTransaction", back_populates="user"
     )
+    fitness_logs: Mapped[List["FitnessLog"]] = relationship("FitnessLog", back_populates="user")
+    bottle_consumptions: Mapped[List["BottleConsumption"]] = relationship(
+        "BottleConsumption", back_populates="user"
+    )
+    survey_answers: Mapped[List["SurveyAnswer"]] = relationship(
+        "SurveyAnswer", back_populates="user"
+    )
+    exchanges: Mapped[List["Exchange"]] = relationship("Exchange", back_populates="user")
