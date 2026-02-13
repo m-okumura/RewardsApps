@@ -266,6 +266,58 @@ docker compose -f docker-compose.prod.yml up -d --build
 
 ---
 
+## 4.6 インターネット経由でのアクセス方法
+
+デプロイ後、以下の URL からインターネット経由でアクセスできます。
+
+### Web（管理画面・Next.js）
+
+| 用途 | URL 例 |
+|------|--------|
+| アプリ | `https://main.xxxxx.amplifyapp.com` |
+| 備考 | Amplify コンソールの **ホスティング** で発行された URL を確認 |
+
+### API（バックエンド）
+
+| 用途 | URL 例 |
+|------|--------|
+| API ベース | `http://<LightsailのパブリックIP>:8000/api/v1` |
+| API ドキュメント | `http://<LightsailのパブリックIP>:8000/api/docs` |
+
+例: Lightsail の IP が `43.207.105.126` の場合  
+- API: http://43.207.105.126:8000/api/v1  
+- ドキュメント: http://43.207.105.126:8000/api/docs  
+
+### モバイルアプリ（Flutter）を AWS に接続する
+
+モバイルアプリから AWS の API に接続するには、**ビルド時に API URL を指定**します。
+
+```powershell
+cd mobile
+
+# API URL を Lightsail の IP に設定してビルド・実行
+C:\flutter\bin\flutter.bat run -d windows --dart-define=API_URL=http://<LightsailのIP>:8000/api/v1
+
+# Android 実機・エミュレータの場合
+C:\flutter\bin\flutter.bat run -d android --dart-define=API_URL=http://<LightsailのIP>:8000/api/v1
+
+# iOS の場合
+C:\flutter\bin\flutter.bat run -d ios --dart-define=API_URL=http://<LightsailのIP>:8000/api/v1
+```
+
+**注意**:
+- `<LightsailのIP>` は Lightsail インスタンスの **パブリック IPv4 アドレス**
+- スマートフォン実機で使う場合、端末と PC が同じ Wi‑Fi でなくてもインターネット経由で接続可能
+- 本番向けには、カスタムドメイン + HTTPS の利用を推奨
+
+### アクセスできない場合の確認
+
+1. **Lightsail のファイアウォール**: ネットワーキングで TCP 8000 が開放されているか
+2. **コンテナの起動**: `docker compose -f docker-compose.prod.yml ps` で稼働確認
+3. **ブラウザで API に直接アクセス**: `http://<IP>:8000/health` が表示されるか確認
+
+---
+
 ## 5. 環境変数一覧
 
 ### バックエンド（Lightsail / docker-compose.prod.yml）

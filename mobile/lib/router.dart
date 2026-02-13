@@ -15,11 +15,14 @@ GoRouter router(AuthProvider authProvider) => GoRouter(
     final auth = authProvider;
     final isAuth = auth.isAuthenticated;
     final isAuthRoute = state.matchedLocation == '/login' || state.matchedLocation == '/register';
+    final isRoot = state.matchedLocation == '/';
 
-    if (!isAuth && !isAuthRoute && state.matchedLocation != '/') {
+    // 未ログイン: ルート or 認証不要でないページ → ログインへ
+    if (!isAuth && (isRoot || !isAuthRoute)) {
       return '/login';
     }
-    if (isAuth && (state.matchedLocation == '/' || isAuthRoute)) {
+    // ログイン済: ルート or 認証ページ → ホームへ
+    if (isAuth && (isRoot || isAuthRoute)) {
       return '/home';
     }
     return null;
