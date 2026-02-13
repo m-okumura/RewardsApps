@@ -66,7 +66,7 @@ export async function authRegister(email: string, password: string, name: string
     });
   } catch (e) {
     throw new Error(
-      "サーバーに接続できません。バックエンド (http://localhost:8000) が起動しているか確認してください。"
+      `サーバーに接続できません。バックエンド (${API_BASE}) が起動しているか、CORS の設定を確認してください。`
     );
   }
   const data = await res.json();
@@ -88,7 +88,7 @@ export async function authLogin(email: string, password: string): Promise<TokenR
     });
   } catch (e) {
     throw new Error(
-      "サーバーに接続できません。バックエンド (http://localhost:8000) が起動しているか確認してください。"
+      `サーバーに接続できません。バックエンド (${API_BASE}) が起動しているか、CORS の設定を確認してください。`
     );
   }
   const data = await res.json();
