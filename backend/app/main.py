@@ -33,13 +33,11 @@ app = FastAPI(
 )
 
 # CORS (allow_credentials=True のときは allow_origins に "*" は使えない)
+# 本番: 環境変数 CORS_ORIGINS に Amplify の URL を追加（カンマ区切り）
+_origins = [x.strip() for x in settings.CORS_ORIGINS.split(",") if x.strip()]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "http://127.0.0.1:3000",
-        "http://localhost:3001",
-    ],
+    allow_origins=_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

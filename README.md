@@ -24,14 +24,26 @@ docker compose up -d postgres
 
 ```bash
 cd backend
-python3 -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+copy .env.example .env   # 初回のみ（Windows）※ macOS/Linux: cp .env.example .env
+python -m venv venv
+
+# 仮想環境を有効化
+# Windows PowerShell:  .\venv\Scripts\Activate.ps1
+# Windows CMD:        venv\Scripts\activate.bat
+# macOS/Linux:        source venv/bin/activate
+
 pip install -r requirements.txt
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
 - API: http://localhost:8000
 - ドキュメント: http://localhost:8000/api/docs
+
+**トラブルシューティング (Windows)**
+
+- **ポート5432が使用中**: `docker-compose.yml`のportsを`5433:5432`に変更済み。`backend/.env`の`DATABASE_URL`で`localhost:5433`を使用
+- **venv有効化**: PowerShellでは`source`が使えない。`.\venv\Scripts\Activate.ps1`を実行
+- **Pillowビルドエラー**: Python 3.13+ではPillow 10.4以上が必要。`requirements.txt`は対応済み
 
 ### 3. フロントエンド（管理画面）
 
@@ -76,3 +88,5 @@ flutter run
 ## ドキュメント
 
 - [システム仕様書](docs/SPECIFICATION.md)
+- [セットアップ手順書（Windows）](docs/SETUP_GUIDE.md) - トラブルシューティング含む
+- [AWS デプロイ手順書](docs/AWS_DEPLOYMENT.md)

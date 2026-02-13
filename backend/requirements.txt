@@ -2,26 +2,27 @@
 fastapi==0.109.0
 uvicorn[standard]==0.27.0
 
-# Database
-sqlalchemy==2.0.25
-alembic==1.13.1
+# Database（Python 3.13/3.14: sqlalchemy 2.0.36+ で TypingOnly 互換対応）
+sqlalchemy>=2.0.36
+alembic>=1.13.1
 
 # Auth
 python-jose[cryptography]==3.3.0
 bcrypt>=4.0.0
 
-# Validation & Utils
-pydantic==2.5.3
-pydantic-settings==2.1.0
+# Validation & Utils（Python 3.14: pydantic 2.12+ にビルド済みホイールあり）
+pydantic>=2.12.0
+pydantic-settings>=2.1.0
 python-multipart==0.0.6
 
-# Database drivers
+# Database drivers（Python 3.14: ビルド済みホイールのあるバージョンを使用）
 aiosqlite==0.19.0
-asyncpg==0.29.0
-greenlet==3.0.3
+asyncpg>=0.31.0
+greenlet>=3.1.0
 
 # Image processing (for receipt OCR placeholder)
-Pillow==10.2.0
+# Pillow 10.2.0はPython 3.13+でビルドエラーになるため、新バージョンを使用
+Pillow>=10.4.0
 
 # Email (for verification - optional)
-email-validator==2.1.0
+email-validator>=2.2.0
