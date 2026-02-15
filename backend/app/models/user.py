@@ -18,6 +18,8 @@ class User(Base):
     nickname: Mapped[Optional[str]] = mapped_column(String(100), nullable=True)
     is_active: Mapped[bool] = mapped_column(Boolean, default=True)
     is_verified: Mapped[bool] = mapped_column(Boolean, default=False)
+    is_admin: Mapped[bool] = mapped_column(Boolean, default=False)
+    referral_code: Mapped[Optional[str]] = mapped_column(String(20), unique=True, nullable=True, index=True)
     created_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow)
     updated_at: Mapped[datetime] = mapped_column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
@@ -34,3 +36,6 @@ class User(Base):
         "SurveyAnswer", back_populates="user"
     )
     exchanges: Mapped[List["Exchange"]] = relationship("Exchange", back_populates="user")
+    shopping_tracks: Mapped[List["ShoppingTrack"]] = relationship(
+        "ShoppingTrack", back_populates="user"
+    )

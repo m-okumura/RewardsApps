@@ -28,44 +28,44 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50">
-      <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-lg">
-        <h1 className="text-2xl font-bold text-center mb-6">ポイ活アプリ 管理画面</h1>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-100 via-white to-emerald-50/50">
+      <div className="w-full max-w-md p-8 bg-white rounded-xl shadow-xl border border-slate-200">
+        <h1 className="text-2xl font-bold text-center mb-6 text-slate-800">ポイ活アプリ 管理画面</h1>
         <form onSubmit={handleSubmit} className="space-y-4">
           {error && (
             <div className="p-3 text-sm text-red-600 bg-red-50 rounded-lg">{error}</div>
           )}
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">メールアドレス</label>
+            <label className="block text-sm font-semibold text-slate-800 mb-1">メールアドレス</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              className="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none"
               placeholder="email@example.com"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">パスワード</label>
+            <label className="block text-sm font-semibold text-slate-800 mb-1">パスワード</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+              className="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-emerald-500 focus:ring-2 focus:ring-emerald-200 outline-none"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 disabled:opacity-50"
+            className="w-full py-3 bg-emerald-500 text-white font-semibold rounded-lg hover:bg-emerald-600 disabled:opacity-50 transition-colors shadow-md"
           >
             {loading ? "ログイン中..." : "ログイン"}
           </button>
         </form>
-        <p className="mt-4 text-center text-sm text-slate-500">
-          <Link href="/register" className="text-emerald-600 hover:underline">
+        <p className="mt-4 text-center text-sm font-medium text-slate-700">
+          <Link href="/register" className="text-emerald-600 font-semibold hover:text-emerald-700">
             新規登録はこちら
           </Link>
         </p>

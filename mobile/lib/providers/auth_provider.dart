@@ -77,18 +77,27 @@ class AuthProvider extends ChangeNotifier {
     return headers;
   }
 
-  Future<void> register(String email, String password, String name) async {
+  Future<void> register(
+    String email,
+    String password,
+    String name, {
+    String? referralCode,
+  }) async {
     _loading = true;
     notifyListeners();
     try {
+      final body = <String, dynamic>{
+        'email': email,
+        'password': password,
+        'name': name,
+      };
+      if (referralCode != null && referralCode.isNotEmpty) {
+        body['referral_code'] = referralCode;
+      }
       final res = await http.post(
         Uri.parse('${Config.apiBaseUrl}/auth/register'),
         headers: await _headers(withAuth: false),
-        body: jsonEncode({
-          'email': email,
-          'password': password,
-          'name': name,
-        }),
+        body: jsonEncode(body),
       );
       final data = jsonDecode(res.body);
       if (res.statusCode == 200) {

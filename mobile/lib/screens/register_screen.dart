@@ -15,13 +15,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _nameController = TextEditingController();
+  final _referralController = TextEditingController();
   String? _error;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final ref = Uri.base.queryParameters['ref'];
+    if (ref != null && _referralController.text.isEmpty) {
+      _referralController.text = ref;
+    }
+  }
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     _nameController.dispose();
+    _referralController.dispose();
     super.dispose();
   }
 
@@ -34,6 +45,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
             _emailController.text.trim(),
             _passwordController.text,
             _nameController.text.trim(),
+            referralCode: _referralController.text.trim().isEmpty
+                ? null
+                : _referralController.text.trim(),
           );
       if (mounted) context.go('/home');
     } catch (e) {
@@ -83,6 +97,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 TextFormField(
                   controller: _nameController,
                   decoration: const InputDecoration(labelText: '名前'),
+                ),
+                const SizedBox(height: 16),
+                TextFormField(
+                  controller: _referralController,
+                  decoration: const InputDecoration(
+                    labelText: '紹介コード（任意）',
+                    hintText: '友達の紹介コード',
+                  ),
                 ),
                 const SizedBox(height: 16),
                 TextFormField(

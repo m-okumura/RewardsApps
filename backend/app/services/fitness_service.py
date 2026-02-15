@@ -23,7 +23,7 @@ async def upsert_steps(
     result = await db.execute(
         select(FitnessLog).where(
             FitnessLog.user_id == user_id,
-            FitnessLog.date == target_date,
+            FitnessLog.log_date == target_date,
         )
     )
     log = result.scalar_one_or_none()
@@ -31,7 +31,7 @@ async def upsert_steps(
         log.steps = steps
         log.updated_at = datetime.utcnow()
     else:
-        log = FitnessLog(user_id=user_id, steps=steps, date=target_date)
+        log = FitnessLog(user_id=user_id, steps=steps, log_date=target_date)
         db.add(log)
     await db.flush()
     await db.refresh(log)
@@ -108,7 +108,7 @@ async def get_recent_logs(
     start = date.today() - timedelta(days=days)
     result = await db.execute(
         select(FitnessLog)
-        .where(FitnessLog.user_id == user_id, FitnessLog.date >= start)
-        .order_by(FitnessLog.date.desc())
+        .where(FitnessLog.user_id == user_id, FitnessLog.log_date >= start)
+        .order_by(FitnessLog.log_date.desc())
     )
     return list(result.scalars().all())

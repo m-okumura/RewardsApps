@@ -202,7 +202,7 @@ flutter run
 
 | ターゲット | コマンド |
 |-----------|---------|
-| Chrome（Web） | `flutter run -d chrome --web-renderer html` |
+| Chrome（Web） | `flutter run -d chrome --no-enable-impeller` |
 | Android エミュレータ | `flutter run -d android` |
 | iOS シミュレータ | `flutter run -d ios` |
 
@@ -225,6 +225,7 @@ flutter run
 | SQLAlchemy AssertionError | Python 3.13/3.14 非互換 | `sqlalchemy>=2.0.36` を使用 |
 | Errno 10061 (PostgreSQL) | DB 未起動 | `docker compose up -d postgres` または SQLite に変更 |
 | flutter が認識されない | PATH 未設定 | PATH に `C:\flutter\bin` を追加、またはフルパスで実行 |
+| ShaderCompilerException (Chrome) | Impeller シェーダーコンパイル失敗 | `flutter clean` 後、`--no-enable-impeller` を付けて実行 |
 
 ---
 

@@ -38,7 +38,7 @@ async def register_steps(
     """歩数データを登録"""
     log = await upsert_steps(db, current_user.id, data.steps, target_date)
     await db.commit()
-    return FitnessStepsResponse(date=log.date, steps=log.steps)
+    return FitnessStepsResponse(date=log.log_date, steps=log.steps)
 
 
 @router.get("/points", response_model=FitnessPointsResponse)
@@ -92,6 +92,6 @@ async def get_steps_history(
     """歩数履歴"""
     logs = await get_recent_logs(db, current_user.id, days)
     return [
-        {"date": str(log.date), "steps": log.steps}
+        {"date": str(log.log_date), "steps": log.steps}
         for log in logs
     ]

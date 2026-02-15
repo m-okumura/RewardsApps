@@ -11,6 +11,9 @@ import 'package:poi_app/screens/fitness_screen.dart';
 import 'package:poi_app/screens/survey_list_screen.dart';
 import 'package:poi_app/screens/survey_answer_screen.dart';
 import 'package:poi_app/screens/points_screen.dart';
+import 'package:poi_app/screens/referral_screen.dart';
+import 'package:poi_app/screens/campaign_screen.dart';
+import 'package:poi_app/screens/shopping_screen.dart';
 
 GoRouter router(AuthProvider authProvider) => GoRouter(
   refreshListenable: authProvider,
@@ -80,6 +83,18 @@ GoRouter router(AuthProvider authProvider) => GoRouter(
     GoRoute(
       path: '/points',
       builder: (context, state) => const PointsScreen(),
+    ),
+    GoRoute(
+      path: '/referrals',
+      builder: (context, state) => const ReferralScreen(),
+    ),
+    GoRoute(
+      path: '/campaigns',
+      builder: (context, state) => const CampaignScreen(),
+    ),
+    GoRoute(
+      path: '/shopping',
+      builder: (context, state) => const ShoppingScreen(),
     ),
   ],
 );

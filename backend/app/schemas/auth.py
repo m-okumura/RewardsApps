@@ -1,4 +1,5 @@
 """認証スキーマ"""
+from typing import Optional
 from pydantic import BaseModel, EmailStr
 
 
@@ -6,6 +7,7 @@ class UserRegister(BaseModel):
     email: EmailStr
     password: str
     name: str = ""
+    referral_code: Optional[str] = None  # 友達紹介コード（登録時）
 
 
 class UserLogin(BaseModel):

@@ -16,10 +16,11 @@ flutter pub get
 
 ### Chrome（Web）
 
-ShaderCompilerException が出る場合は `--web-renderer html` を指定してください。
+ShaderCompilerException が出る場合は `--no-enable-impeller` を付けて実行:
 
 ```bash
-flutter run -d chrome --web-renderer html --dart-define=API_URL=http://localhost:8000/api/v1
+flutter clean
+flutter run -d chrome --no-enable-impeller --dart-define=API_URL=http://localhost:8000/api/v1
 ```
 
 ### エミュレータ/実機

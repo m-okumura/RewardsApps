@@ -37,16 +37,16 @@ export default function NewReceiptPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50">
-      <header className="bg-white shadow-sm border-b">
+    <div className="min-h-screen bg-gradient-to-br from-slate-100 via-white to-emerald-50/30">
+      <header className="bg-white shadow-md border-b border-slate-200">
         <div className="max-w-4xl mx-auto px-4 py-4">
-          <Link href="/dashboard" className="text-emerald-600 hover:underline">← ダッシュボードに戻る</Link>
+          <Link href="/dashboard" className="font-medium text-emerald-600 hover:text-emerald-700">← ダッシュボードに戻る</Link>
         </div>
       </header>
 
       <main className="max-w-md mx-auto px-4 py-8">
-        <h1 className="text-xl font-bold mb-6">レシート登録</h1>
-        <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg shadow">
+        <h1 className="text-xl font-bold mb-6 text-slate-800">レシート登録</h1>
+        <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-xl shadow-lg border border-slate-200">
           {error && (
             <div className="p-3 text-sm text-red-600 bg-red-50 rounded-lg">{error}</div>
           )}
@@ -66,7 +66,7 @@ export default function NewReceiptPage() {
               type="text"
               value={storeName}
               onChange={(e) => setStoreName(e.target.value)}
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg"
+              className="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-emerald-500 outline-none"
               placeholder="例: コンビニエンスストア"
             />
           </div>
@@ -78,14 +78,14 @@ export default function NewReceiptPage() {
               onChange={(e) => setAmount(e.target.value)}
               required
               min="0"
-              className="w-full px-4 py-2 border border-slate-300 rounded-lg"
+              className="w-full px-4 py-2.5 border-2 border-slate-200 rounded-lg focus:border-emerald-500 outline-none"
               placeholder="1000"
             />
           </div>
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-emerald-600 text-white font-medium rounded-lg hover:bg-emerald-700 disabled:opacity-50"
+            className="w-full py-3 bg-emerald-500 text-white font-semibold rounded-lg hover:bg-emerald-600 disabled:opacity-50 transition-colors shadow-md"
           >
             {loading ? "登録中..." : "登録する"}
           </button>

@@ -92,6 +92,30 @@ class _HomeScreenState extends State<HomeScreen> {
                 onTap: () => context.push('/surveys'),
               ),
             ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.group_add),
+                title: const Text('友達紹介'),
+                subtitle: const Text('友達を招待してポイントを貯めよう'),
+                onTap: () => context.push('/referrals'),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.card_giftcard),
+                title: const Text('キャンペーン'),
+                subtitle: const Text('抽選・クエスト・ポイントキャンペーン'),
+                onTap: () => context.push('/campaigns'),
+              ),
+            ),
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.shopping_bag),
+                title: const Text('ショッピング'),
+                subtitle: const Text('提携EC購入でキャッシュバック'),
+                onTap: () => context.push('/shopping'),
+              ),
+            ),
           ],
         ),
       ),

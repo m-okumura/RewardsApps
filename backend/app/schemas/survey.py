@@ -9,6 +9,7 @@ class SurveyResponse(BaseModel):
     title: str
     description: Optional[str] = None
     points: int
+    is_active: bool = True
     expires_at: Optional[datetime] = None
     created_at: datetime
 

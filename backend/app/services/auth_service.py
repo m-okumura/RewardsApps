@@ -4,6 +4,7 @@ from typing import Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
+from app.config import get_settings
 from app.models.user import User
 from app.schemas.auth import UserRegister
 from app.core.security import get_password_hash, verify_password, create_access_token, create_refresh_token, decode_token
@@ -20,9 +21,17 @@ async def register_user(db: AsyncSession, data: UserRegister) -> User:
         password_hash=get_password_hash(data.password),
         name=data.name or data.email.split("@")[0],
     )
+    settings = get_settings()
+    user.is_admin = user.email.lower() == settings.ADMIN_EMAIL.lower()
+
     db.add(user)
     await db.flush()
     await db.refresh(user)
+
+    # 友達紹介処理
+    from app.services.referral_service import process_referral_on_register
+    await process_referral_on_register(db, data.referral_code, user.id)
+
     return user
 
 

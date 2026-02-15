@@ -354,7 +354,7 @@ C:\flutter\bin\flutter.bat run -d android --dart-define=API_URL=http://<IP>:8000
 ```powershell
 cd mobile
 # ターミナルに表示された実際の URL を使用。rewardsapi-xxx は仮の名前で実在しない
-C:\flutter\bin\flutter.bat build web --dart-define=API_URL=https://取得したURL.trycloudflare.com/api/v1
+C:\flutter\bin\flutter.bat build web --no-tree-shake-icons --dart-define=API_URL=https://取得したURL.trycloudflare.com/api/v1
 ```
 
 **HTTP のまま使う場合**（PC の localhost からのみ）
@@ -362,12 +362,14 @@ C:\flutter\bin\flutter.bat build web --dart-define=API_URL=https://取得したU
 ```powershell
 cd mobile
 # <IP> を Lightsail のパブリック IP に置き換える
-C:\flutter\bin\flutter.bat build web --dart-define=API_URL=http://43.207.105.126:8000/api/v1
+C:\flutter\bin\flutter.bat build web --no-tree-shake-icons --dart-define=API_URL=http://43.207.105.126:8000/api/v1
 ```
 
 ビルド完了後、`build/web` フォルダが生成されます。
 
 #### 4.7.2 Netlify へのデプロイ（ドラッグ&ドロップ）
+
+**事前準備**: `mobile/build/web` フォルダを使うため、先に **4.7.1 Flutter Web ビルド** を実行してビルドを完了させてください。
 
 **初回デプロイ**
 
@@ -381,6 +383,8 @@ C:\flutter\bin\flutter.bat build web --dart-define=API_URL=http://43.207.105.126
    - **「Drag and drop your project folder here」** と表示されたドロップエリアを表示する
 
 3. **フォルダのアップロード**
+   - **前提**: 上記 4.7.1 の手順で `flutter build web` を実行し、ビルドを完了させておく。`mobile/build/web` フォルダはこのビルド時にのみ生成される
+   - フォルダが見つからない場合: `mobile` ディレクトリで `flutter build web --no-tree-shake-icons --dart-define=API_URL=https://（バックエンドURL）/api/v1` を実行する
    - エクスプローラーで `mobile/build/web` フォルダを開く
    - `web` フォルダ**自体**を Netlify のドロップエリアにドラッグ&ドロップ  
      （フォルダの中身ではなく、`web` フォルダをまとめてドロップ）
@@ -531,6 +535,13 @@ Next.js をモノレポの `frontend` 以下でデプロイしている場合、
 4. **再デプロイ**  
    上記を変更したあと、**デプロイ** から「リデプロイ」を実行してください。
 
+### Flutter Web ビルド: `IconTreeShakerException: Font subsetting failed`
+
+- **原因**: アイコンのフォントサブセット処理がメモリ不足などで失敗する（exit code -9 は OOM の可能性）
+- **対処**: `flutter build web` に `--no-tree-shake-icons` を付けてビルドする  
+  `flutter build web --no-tree-shake-icons --dart-define=API_URL=...`
+- **注意**: アイコンツリーシェイクを無効にするとビルドサイズが若干増えるが、通常は問題なく動作する
+
 ### Amplify / Netlify から API が呼べない（CORS エラー）
 
 - バックエンドの `CORS_ORIGINS` に Amplify / Netlify の URL が含まれているか確認
@@ -593,7 +604,7 @@ Lightsail 上で Cloudflare Tunnel を実行すると、API 用の HTTPS URL が
 8. 発行される URL（例: `https://rewardsapi.example.com`）を Flutter Web の API URL として使用
 9. 次で再ビルド（**必ず実際の URL を使用**。`rewardsapi-xxx` は説明用の仮の名前であり、実在しません）:
    ```powershell
-   flutter build web --dart-define=API_URL=https://実際のURL/api/v1
+   flutter build web --no-tree-shake-icons --dart-define=API_URL=https://実際のURL/api/v1
    ```
 10. `CORS_ORIGINS` に Netlify の URL と Cloudflare の URL を追加（末尾に `/` は付けない）
 
@@ -620,7 +631,7 @@ Lightsail 上で Cloudflare Tunnel を実行すると、API 用の HTTPS URL が
    ```
 5. Flutter Web を**実際の URL**でビルド（`rewardsapi-xxx` は使わない）:
    ```powershell
-   flutter build web --dart-define=API_URL=https://取得したURL.trycloudflare.com/api/v1
+   flutter build web --no-tree-shake-icons --dart-define=API_URL=https://取得したURL.trycloudflare.com/api/v1
    ```
 6. Netlify に再デプロイ
 7. `CORS_ORIGINS` に Netlify の URL と Cloudflare の URL を両方追加
